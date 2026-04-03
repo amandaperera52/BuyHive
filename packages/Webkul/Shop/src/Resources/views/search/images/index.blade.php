@@ -119,9 +119,13 @@
 
                                 formData.append('image', imageInput.files[0]);
 
+                                // Get CSRF token from meta tag
+                                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || window.csrf_token || '';
+
                                 this.$axios.post('{{ route('shop.search.upload') }}', formData, {
                                         headers: {
-                                            'Content-Type': 'multipart/form-data'
+                                            'Content-Type': 'multipart/form-data',
+                                            'X-CSRF-TOKEN': csrfToken
                                         }
                                     })
                                     .then(response => {
